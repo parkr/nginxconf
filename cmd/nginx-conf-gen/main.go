@@ -19,7 +19,6 @@ func fail(msg string) {
 func main() {
 	domain := flag.String("domain", "", "Host name for the config")
 	ssl := flag.Bool("ssl", true, "Write SSL configuration")
-	sslProvider := flag.String("sslProvider", "letsencrypt", "Write SSL configuration to use Let's Encrypt")
 	static := flag.Bool("static", true, "Write configuration for a static site")
 	proxy := flag.Bool("proxy", false, "Write configuration for a proxy site")
 	proxyPort := flag.Int("port", -1, "Port to proxy to")
@@ -36,7 +35,7 @@ func main() {
 			Domain:      *domain,
 			Template:    "static",
 			SSL:         *ssl,
-			SSLProvider: *sslProvider,
+			SSLProvider: nginxconf.LetsEncrypt{},
 		}
 	} else if *proxy {
 		conf = &nginxconf.SiteConfiguration{
@@ -44,7 +43,7 @@ func main() {
 			Template:    "proxy",
 			ProxyPort:   *proxyPort,
 			SSL:         *ssl,
-			SSLProvider: *sslProvider,
+			SSLProvider: nginxconf.LetsEncrypt{},
 		}
 	} else {
 		fail("fatal: specify -static or -proxy")
