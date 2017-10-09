@@ -93,6 +93,9 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name {{.}};
+
+    {{template "sslConfig" .}}
+
     return 301 https://{{$domain}}$request_uri;
 }
 {{end}}

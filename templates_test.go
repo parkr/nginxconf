@@ -16,6 +16,7 @@ var exampleStaticSiteConfig = &SiteConfiguration{
 	SSLProvider: LetsEncrypt{},
 	Webroot:     "/var/www/static",
 }
+
 var exampleProxySiteConfig = &SiteConfiguration{
 	Domain:      "proxy.example.com",
 	AltDomains:  []string{"www.example.com"},
