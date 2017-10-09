@@ -12,6 +12,7 @@ var (
 type SiteConfigurationSSLProvider interface {
 	SSLCertificatePath(domain string) string
 	SSLCertificateKeyPath(domain string) string
+	SSLTrustedCertificatePath(domain string) string
 }
 
 type SiteConfiguration struct {
@@ -55,4 +56,8 @@ func (c *SiteConfiguration) SSLCertificatePath() string {
 
 func (c *SiteConfiguration) SSLCertificateKeyPath() string {
 	return c.SSLProvider.SSLCertificateKeyPath(c.Domain)
+}
+
+func (c *SiteConfiguration) SSLTrustedCertificatePath() string {
+	return c.SSLProvider.SSLTrustedCertificatePath(c.Domain)
 }

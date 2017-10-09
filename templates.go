@@ -45,6 +45,7 @@ var sslConfigTmpl = template.Must(rootTmpl.New("sslConfig").Parse(strings.TrimSp
     # OCSP Stapling -- fetch OCSP records from URL in ssl_certificate and cache them
     ssl_stapling on;
     ssl_stapling_verify on;
+    ssl_trusted_certificate {{.SSLTrustedCertificatePath}};
 
     # Make @konklone happy
     add_header X-Konklone-Force-HTTPS TRUE;

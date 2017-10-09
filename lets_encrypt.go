@@ -9,3 +9,7 @@ func (e LetsEncrypt) SSLCertificatePath(domain string) string {
 func (e LetsEncrypt) SSLCertificateKeyPath(domain string) string {
 	return "/etc/letsencrypt/live/" + domain + "/privkey.pem"
 }
+
+func (e LetsEncrypt) SSLTrustedCertificatePath(domain string) string {
+	return "/etc/letsencrypt/live/" + domain + "/chain.pem"
+}
