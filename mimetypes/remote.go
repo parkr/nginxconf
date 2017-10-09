@@ -21,11 +21,21 @@ func Fetch() ([]MimeType, error) {
 		return nil, err
 	}
 
+	// Sort the MIME types
+	var mimeTypeKeys []string
+	for mimeType, details := range db {
+		if len(details.Extensions) > 0 {
+			mimeTypeKeys = append(mimeTypeKeys, mimeType)
+		}
+	}
+	sort.Strings(mimeTypeKeys)
+
+	// One by one in sorted order, add each eligible MIME type.
 	var types []MimeType
 	extensionsSeen := map[string]bool{}
-	for mimeType, details := range db {
+	for _, mimeType := range mimeTypeKeys {
 		var uniqueExtensions []string
-		for _, ext := range details.Extensions {
+		for _, ext := range db[mimeType].Extensions {
 			if _, ok := extensionsSeen[ext]; !ok {
 				extensionsSeen[ext] = true
 				uniqueExtensions = append(uniqueExtensions, ext)
@@ -34,13 +44,11 @@ func Fetch() ([]MimeType, error) {
 		if len(uniqueExtensions) > 0 {
 			types = append(types, MimeType{
 				Name:         mimeType,
-				Compressible: details.Compressible,
+				Compressible: db[mimeType].Compressible,
 				Extensions:   uniqueExtensions,
 			})
-
 		}
 	}
-	sort.Stable(MimeTypes(types))
 
 	return types, nil
 }
