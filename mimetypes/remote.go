@@ -22,13 +22,22 @@ func Fetch() ([]MimeType, error) {
 	}
 
 	var types []MimeType
+	var extensionsSeen map[string]bool
 	for mimeType, details := range db {
-		if len(details.Extensions) > 0 {
+		var uniqueExtensions []string
+		for _, ext := range details.Extensions {
+			if _, ok := extensionsSeen[ext]; ok {
+				extensionsSeen[ext] = true
+				uniqueExtensions = append(uniqueExtensions, ext)
+			}
+		}
+		if len(uniqueExtensions) > 0 {
 			types = append(types, MimeType{
 				Name:         mimeType,
 				Compressible: details.Compressible,
-				Extensions:   details.Extensions,
+				Extensions:   uniqueExtensions,
 			})
+
 		}
 	}
 	sort.Stable(MimeTypes(types))
