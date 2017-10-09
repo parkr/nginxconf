@@ -56,6 +56,7 @@ var rootLocationTmpl = template.Must(rootTmpl.New("rootLocation").Parse(strings.
     location / {
         {{if .IsStatic}}try_files $uri $uri.html $uri/index.html index.html;
         {{else if .IsProxy}}proxy_pass {{.ProxyURL}};
+        proxy_set_header  X-Real-IP  $remote_addr;
         {{end}}
     }
 `)))
@@ -81,6 +82,7 @@ var mediaLocationTmpl = template.Must(rootTmpl.New("mediaLocation").Parse(string
         open_file_cache_errors off;
         {{else if .IsProxy}}
         proxy_pass {{.ProxyURL}};
+        proxy_set_header  X-Real-IP  $remote_addr;
         {{end}}
     }
 `)))
