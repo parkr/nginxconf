@@ -17,6 +17,7 @@ func PrintConfiguration(out io.Writer, config *SiteConfiguration) error {
 		fmt.Fprintf(out, "\n\nerror: %+v\n\n", err)
 		return err
 	}
+	fmt.Fprint(out, "\n")
 
 	return nil
 }
