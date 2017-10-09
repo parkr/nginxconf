@@ -22,11 +22,11 @@ func Fetch() ([]MimeType, error) {
 	}
 
 	var types []MimeType
-	var extensionsSeen map[string]bool
+	extensionsSeen := map[string]bool{}
 	for mimeType, details := range db {
 		var uniqueExtensions []string
 		for _, ext := range details.Extensions {
-			if _, ok := extensionsSeen[ext]; ok {
+			if _, ok := extensionsSeen[ext]; !ok {
 				extensionsSeen[ext] = true
 				uniqueExtensions = append(uniqueExtensions, ext)
 			}
