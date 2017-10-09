@@ -97,6 +97,10 @@ server {
 
     {{template "sslConfig" $this}}
 
+    # optional: turn on session resumption, using a 10 min cache shared across nginx processes
+    # as recommended by http://nginx.org/en/docs/http/configuring_https_servers.html
+    keepalive_timeout 70;
+
     return 301 https://{{$this.Domain}}$request_uri;
 }
 {{end}}
