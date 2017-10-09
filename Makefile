@@ -19,3 +19,4 @@ run: build
 	  -proxy -ssl \
 	  -altDomains="www2.example.com" \
 	  -port=1313 > proxy.conf
+	nginx-mimes-gen > mimetypes.conf
