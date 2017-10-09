@@ -131,4 +131,6 @@ server {
 
     {{template "mediaLocation" .}}
 }
+
+# vim: syn=nginx
 `)))
