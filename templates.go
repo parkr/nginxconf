@@ -13,17 +13,25 @@ server {
     listen 80;
     listen [::]:80;
     server_name {{.Domain}};
+    {{if .IsRedirect}}
+    return 301 {{.RedirectSchemeHost}}$request_uri;
+    {{else}}
     return 301 https://$host$request_uri;
+    {{end}}
 }
 
-{{$domain := .Domain}}
+{{$this := .}}
 {{range .AltDomains}}
-# Redirect HTTP to HTTPS from {{.}} to {{$domain}}
+# Redirect HTTP to HTTPS from {{.}} to {{$this.Domain}}
 server {
     listen 80;
     listen [::]:80;
     server_name {{.}};
-    return 301 https://{{$domain}}$request_uri;
+    {{if $this.IsRedirect}}
+    return 301 {{$this.RedirectSchemeHost}}$request_uri;
+    {{else}}
+    return 301 https://{{$this.Domain}}$request_uri;
+    {{end}}
 }{{end}}
 `)))
 
@@ -106,7 +114,11 @@ server {
     # as recommended by http://nginx.org/en/docs/http/configuring_https_servers.html
     keepalive_timeout 70;
 
+    {{if $this.IsRedirect}}
+    return 301 {{$this.RedirectSchemeHost}}$request_uri;
+    {{else}}
     return 301 https://{{$this.Domain}}$request_uri;
+    {{end}}
 }
 {{end}}
 
@@ -129,9 +141,12 @@ server {
 
     {{template "sslConfig" .}}
 
+    {{if .IsRedirect}}
+    return 301 {{.RedirectSchemeHost}}$request_uri;
+    {{else}}
     {{template "rootLocation" .}}
-
     {{template "mediaLocation" .}}
+    {{end}}
 }
 
 # vim: syn=nginx

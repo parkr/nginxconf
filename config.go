@@ -1,12 +1,16 @@
 package nginxconf
 
-import "fmt"
+import (
+	"fmt"
+	"net/url"
+)
 
 type SiteConfigurationTemplateType string
 
 var (
-	StaticSite SiteConfigurationTemplateType = "static"
-	ProxySite  SiteConfigurationTemplateType = "proxy"
+	StaticSite   SiteConfigurationTemplateType = "static"
+	ProxySite    SiteConfigurationTemplateType = "proxy"
+	RedirectSite SiteConfigurationTemplateType = "redirect"
 )
 
 type SiteConfigurationSSLProvider interface {
@@ -36,6 +40,9 @@ type SiteConfiguration struct {
 
 	// Root directory
 	Webroot string
+
+	// Redirect URL, required for redirect type
+	RedirectURL *url.URL
 }
 
 func (c *SiteConfiguration) IsStatic() bool {
@@ -46,8 +53,19 @@ func (c *SiteConfiguration) IsProxy() bool {
 	return c.Template == ProxySite
 }
 
+func (c *SiteConfiguration) IsRedirect() bool {
+	return c.Template == RedirectSite
+}
+
 func (c *SiteConfiguration) ProxyURL() string {
 	return fmt.Sprintf("http://localhost:%d", c.ProxyPort)
+}
+
+func (c *SiteConfiguration) RedirectSchemeHost() string {
+	if c.RedirectURL == nil {
+		return "https://$host"
+	}
+	return fmt.Sprintf("%s://%s", c.RedirectURL.Scheme, c.RedirectURL.Host)
 }
 
 func (c *SiteConfiguration) SSLCertificatePath() string {

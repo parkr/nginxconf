@@ -7,7 +7,7 @@ import (
 
 func PrintConfiguration(out io.Writer, config *SiteConfiguration) error {
 	switch config.Template {
-	case StaticSite, ProxySite:
+	case StaticSite, ProxySite, RedirectSite:
 		// pass
 	default:
 		return fmt.Errorf("invalid config type: %s", config.Template)
