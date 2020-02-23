@@ -7,7 +7,7 @@ import (
 
 var rootTmpl = template.New("root")
 
-var httpToHttpsRedirectTmpl = template.Must(rootTmpl.New("httpsRedirect").Parse(strings.TrimSpace(`
+var httpToHTTPSRedirectTmpl = template.Must(rootTmpl.New("httpsRedirect").Parse(strings.TrimSpace(`
 # Redirect HTTP to HTTPS
 server {
     listen 80;

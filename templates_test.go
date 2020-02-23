@@ -63,7 +63,7 @@ func testTmplExecutes(t *testing.T, tmpl *template.Template) {
 }
 
 func TestHttpToHttpsRedirectTmpl(t *testing.T) {
-	testTmplExecutes(t, httpToHttpsRedirectTmpl)
+	testTmplExecutes(t, httpToHTTPSRedirectTmpl)
 }
 
 func TestSSLConfigTmpl(t *testing.T) {
