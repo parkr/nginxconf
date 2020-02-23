@@ -66,6 +66,7 @@ var rootLocationTmpl = template.Must(rootTmpl.New("rootLocation").Parse(strings.
         {{else if .IsProxy}}proxy_pass {{.ProxyURL}};
         proxy_set_header  X-Real-IP  $remote_addr;
         proxy_set_header  X-Forwarded-For  $remote_addr;
+        proxy_set_header  Host $host;
         {{end}}
     }
 `)))
@@ -93,6 +94,7 @@ var mediaLocationTmpl = template.Must(rootTmpl.New("mediaLocation").Parse(string
         proxy_pass {{.ProxyURL}};
         proxy_set_header  X-Real-IP  $remote_addr;
         proxy_set_header  X-Forwarded-For  $remote_addr;
+        proxy_set_header  Host $host;
         {{end}}
     }
 `)))
