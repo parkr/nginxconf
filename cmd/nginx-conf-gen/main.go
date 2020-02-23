@@ -13,8 +13,8 @@ import (
 	"github.com/parkr/nginxconf"
 )
 
-func fail(args ...interface{}) {
-	fmt.Println(args...)
+func failf(format string, args ...interface{}) {
+	fmt.Printf(format+"\n", args...)
 	os.Exit(1)
 }
 
@@ -30,7 +30,7 @@ func main() {
 	flag.Parse()
 
 	if (*static && *proxy) || (*static && *redirect != "") || (*proxy && *redirect != "") {
-		fail("fatal: cannot mix static & proxy & redirect types. choose one")
+		failf("fatal: cannot mix static & proxy & redirect types. choose one")
 	}
 
 	var altDomains []string
@@ -60,7 +60,7 @@ func main() {
 	} else if *redirect != "" {
 		redirectURL, err := url.Parse(*redirect)
 		if err != nil {
-			fail("fatal: couldn't parse %q: %+v", *redirect, err)
+			failf("fatal: couldn't parse %q: %+v", *redirect, err)
 		}
 
 		conf = &nginxconf.SiteConfiguration{
@@ -72,10 +72,10 @@ func main() {
 			SSLProvider: nginxconf.LetsEncrypt{},
 		}
 	} else {
-		fail("fatal: specify -static or -proxy")
+		failf("fatal: specify -static or -proxy")
 	}
 
 	if err := nginxconf.PrintConfiguration(os.Stdout, conf); err != nil {
-		fail("fatal: couldn't generate config: %+v", err)
+		failf("fatal: couldn't generate config: %+v", err)
 	}
 }
