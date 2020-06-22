@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-const MimeTypeDBURL = "https://raw.githubusercontent.com/jshttp/mime-db/master/db.json"
+const MimeTypeDBURL = "https://raw.githubusercontent.com/jshttp/mime-db/HEAD/db.json"
 
 func Fetch() ([]MimeType, error) {
 	resp, err := http.Get(MimeTypeDBURL)
